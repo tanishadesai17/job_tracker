@@ -3,7 +3,7 @@ import axios from "axios";
 import "../css/styles.css";
 import "../css/apply.css";
 
-function Apply() {
+function Apply({token}) {
   const [form, setForm] = useState({
     company: "",
     position: "",
@@ -22,7 +22,7 @@ function Apply() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8080/applications", form);
+      await axios.post("http://localhost:8080/applications", form, {headers: { Authorization: `Bearer ${token}`}});
       setMessage("Application added!");
       setForm({
         company: "",

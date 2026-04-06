@@ -1,7 +1,14 @@
 import "../css/index.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Home() {
+function Home({ setToken }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setToken(null);
+    navigate("/");
+  };
+
   return (
     <div className="homePage">
       <div className="homeContainer">

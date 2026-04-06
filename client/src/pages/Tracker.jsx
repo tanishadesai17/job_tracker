@@ -3,13 +3,14 @@ import axios from "axios";
 import "../css/tracker.css";
 import "../css/styles.css";
 
-function Tracker() {
+function Tracker({token}) {
   const [applications, setApplications] = useState([]);
   const [message, setMessage] = useState("");
+  const aheader = { headers: { Authorization: `Bearer ${token}`}};
 
   const loadApplications = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/applications");
+      const res = await axios.get("http://localhost:8080/applications", aheader);
       setApplications(res.data);
       setMessage("");
     } catch {
@@ -23,7 +24,7 @@ function Tracker() {
 
   const deleteApplication = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/applications/${id}`);
+      await axios.delete(`http://localhost:8080/applications/${id}`, aheader);
       setMessage("Application deleted!");
       loadApplications();
     } catch {
@@ -33,9 +34,8 @@ function Tracker() {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:8080/applications/${id}`, {
-        status: newStatus,
-      });
+      await axios.put(`http://localhost:8080/applications/${id}`, 
+        {status: newStatus}, aheader);
 
       setMessage("Application updated!");
       loadApplications();
@@ -81,8 +81,8 @@ function Tracker() {
                       }
                     >
                       <option value="Applied">Applied</option>
-                      <option value="Interview">Interviewing</option>
-                      <option value="Offer">Offer</option>
+                      <option value="Interviewing">Interviewing</option>
+                      <option value="Offer Received">Offer Received</option>
                       <option value="Rejected">Rejected</option>
                     </select>
                   </td>

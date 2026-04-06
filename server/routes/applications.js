@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Application = require("../models/Application");
+const Application = require("../models/Application"); 
+const auth = require("../middleware/auth");
 
 // CREATE
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
-    const newApp = await Application.create(req.body);
+    const newApp = await Application.create({...req.body, user:req.user._id});
     res.status(201).json(newApp);
   } catch (err) {
     res.status(400).json({ error: "Failed to Create Application", details: err.message });
@@ -13,9 +14,9 @@ router.post("/", async (req, res) => {
 });
 
 // READ ALL
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    const apps = await Application.find();
+    const apps = await Application.find({user:req.user._id});
     res.status(200).json(apps);
   } catch (err) {
     res.status(500).json({ error: "Failed to Retrieve Applications", details: err.message });
@@ -23,9 +24,9 @@ router.get("/", async (req, res) => {
 });
 
 // READ ONE
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
-    const app = await Application.findById(req.params.id);
+    const app = await Application.findById({_id:req.params.id, user:req.user._id});
     if (!app) return res.status(404).json({ error: "Not found" });
     res.json(app);
   } catch (err) {
@@ -34,7 +35,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
     const updated = await Application.findByIdAndUpdate(
       req.params.id,
@@ -49,9 +50,9 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
-    const deleted = await Application.findByIdAndDelete(req.params.id);
+    const deleted = await Application.findByIdAndDelete({_id:req.params.id, user:req.user._id});
 
     if (!deleted) {
       return res.status(404).json({ error: "Not found" });
