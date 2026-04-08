@@ -3,8 +3,20 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const http = require("http");
+const { Server } = require("socket.io");
+
 const app = express();
 const PORT = 8080;
+
+// HTTP and socket.io server
+const server = http.createServer(app); 
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+  }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -41,6 +53,28 @@ const Application = require("./models/Application");
 
 //mongoose.connection.once("open", seedDatabase);
 
-app.listen(PORT, () => {
+
+// SOCKET.IO
+const Message = require("./models/Message");
+
+io.on("connection", async (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  // retain last 50 messages 
+  const history = await Message.find().sort({ createdAt: 1 }).limit(50);
+  socket.emit("message_history", history);
+
+  socket.on("send_message", async (data) => {
+  const message = new Message(data);
+  await message.save();
+  
+  io.emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {console.log("User Disconnected", socket.id);});
+});
+
+
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

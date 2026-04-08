@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../css/styles.css";
 
-function Login({ setToken }) {
-    const [username,setUsername] = useState("");
+function Login({ setToken, setUsername }) {
+    const [username,setUsernameInput] = useState("");
     const [password,setPassword] = useState("");  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +26,7 @@ function Login({ setToken }) {
       }
 
       setToken(data.token);
+      setUsername(username);
       navigate("/home");
     } catch (err) {
       setError("try again please");
@@ -41,7 +42,7 @@ function Login({ setToken }) {
         <input
           type="text"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsernameInput(e.target.value)}
           required
         />
         <p>

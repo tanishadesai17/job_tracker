@@ -1,7 +1,8 @@
+import { use } from "react";
 import "../css/index.css";
 import { Link, useNavigate } from "react-router-dom";
 
-function Home({ setToken }) {
+function Home({ setToken, username }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -11,6 +12,7 @@ function Home({ setToken }) {
 
   return (
     <div className="homePage">
+      <h2>Welcome, {username}!</h2>
       <div className="homeContainer">
         <h1>Job Application Tracker</h1>
 
