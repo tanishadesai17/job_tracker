@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../css/styles.css";
 
-function Register({ setToken }) {
-  const [username, setUsrname] = useState("");
+function Register({ setToken, setUsername }) {
+  const [username, setUsernameInput] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -22,35 +22,38 @@ function Register({ setToken }) {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Registration failed");
+        setError(data.message || "Registration failed.");
         return;
       }
 
       setToken(data.token);
-      navigate("/login");
+      setUsername(username);
+      navigate("/home");
     } catch (err) {
-      setError("try again");
+      setError("Something went wrong. Please try again.");
     }
   };
 
   return (
     <div className="formContainer">
-      <h2>Register</h2>
+      <h2>Create an Account</h2>
       {error && <p className="errorMsg">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label>Username </label>
+        <label>Username</label>
         <input
           type="text"
           value={username}
-          onChange={(e) => setUsrname(e.target.value)}
+          onChange={(e) => setUsernameInput(e.target.value)}
+          placeholder="Choose a username"
           required
         />
-        <p></p>
-        <label>Password </label>
+
+        <label>Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Choose a password"
           required
         />
 

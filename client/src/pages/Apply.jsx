@@ -3,7 +3,7 @@ import axios from "axios";
 import "../css/styles.css";
 import "../css/apply.css";
 
-function Apply({token}) {
+function Apply({ token }) {
   const [form, setForm] = useState({
     company: "",
     position: "",
@@ -22,8 +22,10 @@ function Apply({token}) {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8080/applications", form, {headers: { Authorization: `Bearer ${token}`}});
-      setMessage("Application added!");
+      await axios.post("http://localhost:8080/applications", form, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setMessage("Application added successfully!");
       setForm({
         company: "",
         position: "",
@@ -32,70 +34,74 @@ function Apply({token}) {
         notes: ""
       });
     } catch (err) {
-      setMessage(err.response?.data?.error || "Error adding application :(");
+      setMessage(err.response?.data?.error || "Error adding application.");
     }
   };
 
   return (
-  <div className="pageContent">
-    <h2 className="pageTitle">Add a new application!</h2>
+    <div className="pageContent">
+      <h2 className="pageTitle">Add a New Application</h2>
 
-    <div className="card formCard">
-      <form id="apply" onSubmit={handleSubmit}>
-        <label>Company Name</label>
-        <input
-          type="text"
-          name="company"
-          value={form.company}
-          onChange={handleChange}
-          required
-        />
+      <div className="card formCard">
+        <form id="apply" onSubmit={handleSubmit}>
+          <label>Company Name</label>
+          <input
+            type="text"
+            name="company"
+            placeholder="e.g. Google"
+            value={form.company}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Position</label>
-        <input
-          type="text"
-          name="position"
-          value={form.position}
-          onChange={handleChange}
-          required
-        />
+          <label>Position</label>
+          <input
+            type="text"
+            name="position"
+            placeholder="e.g. Software Engineer Intern"
+            value={form.position}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Application Date</label>
-        <input
-          type="date"
-          name="appDate"
-          value={form.appDate}
-          onChange={handleChange}
-          required
-        />
+          <label>Application Date</label>
+          <input
+            type="date"
+            name="appDate"
+            value={form.appDate}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Status</label>
-        <select
-          name="status"
-          value={form.status}
-          onChange={handleChange}
-          required
-        >
-          <option value="Applied">Applied</option>
-          <option value="Interviewing">Interviewing</option>
-          <option value="Offer Received">Offer Received</option>
-        </select>
+          <label>Status</label>
+          <select
+            name="status"
+            value={form.status}
+            onChange={handleChange}
+            required
+          >
+            <option value="Applied">Applied</option>
+            <option value="Interviewing">Interviewing</option>
+            <option value="Offer Received">Offer Received</option>
+            <option value="Rejected">Rejected</option>
+          </select>
 
-        <label>Notes</label>
-        <textarea
-          name="notes"
-          rows="3"
-          value={form.notes}
-          onChange={handleChange}
-        />
+          <label>Notes</label>
+          <textarea
+            name="notes"
+            rows="3"
+            placeholder="Any extra details..."
+            value={form.notes}
+            onChange={handleChange}
+          />
 
-        <button type="submit">Submit Application</button>
-      </form>
+          <button type="submit">Submit Application</button>
+        </form>
 
-      {message && <div id="message">{message}</div>}
+        {message && <div id="message">{message}</div>}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default Apply;

@@ -17,8 +17,6 @@ function App() {
   const [username, setUsername] = useState(null);
   const [chatLog, setChatLog] = useState([]);
 
-
-  // chat updates
   useEffect(() => {
     socket.on("message_history", (history) => {
       setChatLog(history);
@@ -33,20 +31,19 @@ function App() {
     };
   }, []);
 
-
-
   return (
     <>
       <header className="nav">
         <div className="navInner">
-          <div className="brand">Job Application Tracker</div>
+          <div className="brand">💼 Job Tracker</div>
 
           <div className="navLinks">
-            <NavLink to="/home" end className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Home</NavLink>
-            <NavLink to="/apply" className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Apply</NavLink>
-            <NavLink to="/tracker" className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Tracker</NavLink>
-            <NavLink to="/chat" className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Chat</NavLink>
-            {token && <button className="navButton" onClick={() => { setToken(null); setUsername(null); }}>Logout</button>}
+            {token && <NavLink to="/home" end className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Home</NavLink>}
+            {token && <NavLink to="/apply" className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Apply</NavLink>}
+            {token && <NavLink to="/tracker" className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Tracker</NavLink>}
+            {token && <NavLink to="/chat" className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Chat</NavLink>}
+            {token && <span className="navUser">👤 {username}</span>}
+            {token && <button className="navButton logoutBtn" onClick={() => { setToken(null); setUsername(null); }}>Logout</button>}
           </div>
         </div>
       </header>
@@ -54,7 +51,7 @@ function App() {
       <main className="pageContent">
         <Routes>
           <Route path="/" element={<User />} />
-          <Route path="/home" element={token ? <Home setToken={setToken} username={username} /> : <Navigate to="/login" />} />
+          <Route path="/home" element={token ? <Home token={token} username={username} /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login setToken={setToken} setUsername={setUsername} />} />
           <Route path="/register" element={<Register setToken={setToken} setUsername={setUsername} />} />
           <Route path="/apply" element={token ? <Apply token={token} /> : <Navigate to="/login" />} />

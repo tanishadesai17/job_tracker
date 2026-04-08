@@ -3,9 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import "../css/styles.css";
 
 function Login({ setToken, setUsername }) {
-    const [username,setUsernameInput] = useState("");
-    const [password,setPassword] = useState("");  const [error, setError] = useState(null);
-    const navigate = useNavigate();
+  const [username, setUsernameInput] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ function Login({ setToken, setUsername }) {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Login failed");
+        setError(data.message || "Login failed.");
         return;
       }
 
@@ -29,7 +30,7 @@ function Login({ setToken, setUsername }) {
       setUsername(username);
       navigate("/home");
     } catch (err) {
-      setError("try again please");
+      setError("Something went wrong. Please try again.");
     }
   };
 
@@ -38,23 +39,24 @@ function Login({ setToken, setUsername }) {
       <h2>Login</h2>
       {error && <p className="errorMsg">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label>Username </label>
+        <label>Username</label>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsernameInput(e.target.value)}
+          placeholder="Enter your username"
           required
         />
-        <p>
-        </p>
 
-        <label>Password </label>
+        <label>Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
           required
         />
+
         <button type="submit">Login</button>
       </form>
       <p>Don't have an account? <Link to="/register">Register here</Link></p>
