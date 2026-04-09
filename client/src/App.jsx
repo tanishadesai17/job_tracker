@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import GlobalChat from "./pages/GlobalChat";
 import "./css/styles.css";
+import jobIcon from "./assets/job.png";
 
 const socket = io.connect("http://localhost:8080");
 
@@ -35,7 +36,14 @@ function App() {
     <>
       <header className="nav">
         <div className="navInner">
-          <div className="brand">💼 Job Tracker</div>
+          <div className="brand">
+          <img src={jobIcon} alt="logo" className="brandLogo" />
+
+          <div className="brandText">
+          <span className="mainTitle">Book of Job</span>
+          <span className="subTitle">Job Application Tracker</span>
+          </div>
+          </div>
 
           <div className="navLinks">
             {token && <NavLink to="/home" end className={({ isActive }) => `navButton ${isActive ? "active" : ""}`}>Home</NavLink>}

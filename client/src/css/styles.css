@@ -43,8 +43,38 @@ body {
 }
 
 .brand {
-  font-weight: 800;
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center; 
+  gap: 10px;          
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.brandLogo {
+  height: 30px;        
+  width: auto;        
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+}
+
+.mainTitle {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 800;      
+  color: #402c2c;          
+  letter-spacing: 0.5px;
+}
+
+.subTitle {
+  font-size: 0.75rem;      
+  font-weight: 400;
+  opacity: 0.8;            
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .navLinks {
